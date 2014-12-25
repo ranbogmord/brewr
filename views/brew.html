@@ -1,0 +1,14 @@
+<button>Brew.</button>
+
+<script src="//code.jquery.com/jquery-latest.min.js"></script>
+<script>
+    jQuery(function ($) {
+        $("button").click(function (e) {
+            e.preventDefault();
+
+            $.post("/brew", function (res) {
+                console.dir(res);
+            });
+        });
+    });
+</script>

@@ -1,0 +1,23 @@
+{
+  "name": "brewr",
+  "version": "0.1.0",
+  "description": "Coffee brewer software",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "John Eriksson <@ranbogmord>",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.10.0",
+    "express": "^4.10.6",
+    "express-session": "^1.9.3",
+    "gpio": "^0.2.6",
+    "moment": "^2.8.4",
+    "mysql": "^2.5.4",
+    "passport": "^0.2.1",
+    "passport-local": "^1.0.0",
+    "password-hash": "^1.2.2",
+    "sequelize": "^2.0.0-rc4"
+  }
+}
