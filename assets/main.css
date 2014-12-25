@@ -44,6 +44,10 @@ header h1 {
     background-color: #FFA726;
 }
 
+.current-status[data-status="heating"] {
+    background-color: #FFEE58;
+}
+
 .brew-btn {
     width: 100%;
     padding: 0 20px;

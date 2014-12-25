@@ -98,15 +98,21 @@ app.post("/brew", app.ensureAuthed, function (req, res) {
 	var sigPin = gpio.export(4, {
 		interval: 400,
 		ready: function () {
-			var time = 1200000;
+			var brewtime = 600000;
+			var heattime = 2400000;
+
 			app.set("brew_status", "brewing");
 			sigPin.set();
+
+			setTimeout(function () {
+				app.set("brew_status", "heating");
+			}, brewtime);
 
 			setTimeout(function () {
 				sigPin.reset();
 				sigPin.unexport();
 				app.set("brew_status", "idle");
-			}, time);
+			}, heattime);
 
 			res.json({
 				message: "Started brewing, your coffee will be available soon"
