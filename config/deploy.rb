@@ -9,7 +9,7 @@ set :repo_url, 'git@github.com:ranbogmord/brewr.git'
 
 # Default deploy_to directory is /var/www/my_app
 set :deploy_to, '/home/john/cap/brewr'
-
+set :branch, "develop"
 # Default value for :scm is :git
 # set :scm, :git
 
@@ -40,7 +40,7 @@ namespace :deploy do
   task :restart do
     on roles(:app), in: :sequence, wait: 1 do
       # Your restart mechanism here, for example:
-      execute :sudo, 'forever restart index.js'
+      execute :sudo, 'forever restart /home/john/cap/brewr/current/index.js'
     end
   end
 
