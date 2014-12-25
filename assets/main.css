@@ -23,6 +23,7 @@ header h1 {
 
 .current-status {
     width: 100%;
+    margin-bottom: 20px;
 }
 
 .current-status .status {
