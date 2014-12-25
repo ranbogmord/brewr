@@ -8,11 +8,14 @@ var express = require('express'),
 	gpio = require('gpio'),
 	schema = require('./schema'),
 	User = schema.User,
-	Brew = schema.Brew;
+	Brew = schema.Brew,
+	sstatic = require('serve-static');
 
 app.set("port", process.env.PORT || 3000);
+app.set("brew_status", "idle");
 
 
+app.use(sstatic("assets"));
 app.use(bp.json());
 app.use(bp.urlencoded({extended: true}));
 
@@ -50,7 +53,7 @@ app.ensureAuthed = function (req, res, next) {
 
 app.get("/status", function (req, res) {
 	res.json({
-		status: "idle"
+		status: app.get("brew_status")
 	});
 });
 
@@ -67,10 +70,54 @@ app.get("/brew", app.ensureAuthed, function (req, res) {
 	res.sendFile(__dirname + "/views/brew.html");
 });
 
-app.post("/brew", app.ensureAuthed, function (req, res) {
-	res.json({
-		status: "brewing",
+app.get("/add-user", app.ensureAuthed, function (req, res) {
+	res.sendFile(__dirname + "/views/add.html");
+});
+
+app.post("/add-user", app.ensureAuthed, function (req, res) {
+	if (!req.body.username || !req.body.password) {
+		return res.send("Missing required parameters");
+	}
+
+	User.create({
+		username: req.body.username,
+		password: ph.generate(req.body.password)
+	})
+	.then(function (user) {
+		res.send("User: " + user.username + " created.");
 	});
+});
+
+app.post("/brew", app.ensureAuthed, function (req, res) {
+	if (app.get("brew_status") == "brewing") {
+		return res.json({
+			message: "Already brewing"
+		});
+	}
+
+	var sigPin = gpio.export(4, {
+		interval: 400,
+		ready: function () {
+			var time = 10000;
+			app.set("brew_status", "brewing");
+			sigPin.set();
+
+			setTimeout(function () {
+				sigPin.reset();
+				sigPin.unexport();
+				app.set("brew_status", "idle");
+			}, time);
+
+			res.json({
+				message: "Started brewing, your coffee will be available soon"
+			});
+		}
+	})
+});
+
+app.get("/logout", app.ensureAuthed, function (req, res) {
+	req.logout();
+	res.redirect("/");
 });
 
 app.listen(app.get("port"), function () {

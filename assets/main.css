@@ -1,0 +1,81 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+}
+
+header {
+    width: 100%;
+    height: 50px;
+
+    background-color: #AB47BC;
+}
+
+header h1 {
+    color: #fff;
+    text-align: center;
+    line-height: 50px;
+}
+
+.current-status {
+    width: 100%;
+}
+
+.current-status .status {
+    font-size: 28px;
+    text-align: center;
+    display: block;
+    width: 100%;
+}
+
+.current-status[data-status="idle"] {
+    background-color: #66BB6A;
+}
+
+.current-status[data-status="brewing"] {
+    background-color: #FFA726;
+}
+
+.brew-btn {
+    width: 100%;
+    padding: 0 20px;
+}
+
+#brew-btn {
+    width: 100%;
+    border: 0;
+    outline: 0;
+
+    background-color: #FFF8E7;
+
+    padding: 40px;
+    font-size: 35px;
+}
+
+a {
+    text-decoration: none;
+    color: #AB47BC;
+}
+
+.other ul {
+    list-style-type: none;
+    width: 100%;
+}
+
+.other ul li {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.other ul li a {
+    text-align: center;
+    display: block;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    border: 1px solid #AB47BC;
+}

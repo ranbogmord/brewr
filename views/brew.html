@@ -1,14 +1,34 @@
-<button>Brew.</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Brewr</title>
+    <link rel="stylesheet" href="/main.css">
+</head>
+<body>
+    <header>
+        <h1>Brewr</h1>
+    </header>
+    <div class="current-status">
+        <span class="status"></span>
+    </div>
+    <div class="brew-btn">
+        <button id="brew-btn">Brew!</button>
+    </div>
 
-<script src="//code.jquery.com/jquery-latest.min.js"></script>
-<script>
-    jQuery(function ($) {
-        $("button").click(function (e) {
-            e.preventDefault();
-
-            $.post("/brew", function (res) {
-                console.dir(res);
-            });
-        });
-    });
-</script>
+    <div class="other">
+        <ul>
+            <li>
+                <a href="/add-user">Add user</a>
+            </li>
+            <li>
+                <a href="/logout">Logout</a>
+            </li>
+        </ul>
+    </div>
+    
+    <script src="//code.jquery.com/jquery-latest.min.js"></script>
+    <script src="/brewr.js"></script>
+</body>
+</html>
