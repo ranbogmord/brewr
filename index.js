@@ -89,9 +89,9 @@ app.post("/add-user", app.ensureAuthed, function (req, res) {
 });
 
 app.post("/brew", app.ensureAuthed, function (req, res) {
-	if (app.get("brew_status") == "brewing") {
+	if (app.get("brew_status") !== "idle") {
 		return res.json({
-			message: "Already brewing"
+			message: "Cannot start brewing, status: " + app.get("brew_status")
 		});
 	}
 
