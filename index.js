@@ -98,7 +98,7 @@ app.post("/brew", app.ensureAuthed, function (req, res) {
 	var sigPin = gpio.export(4, {
 		interval: 400,
 		ready: function () {
-			var time = 10000;
+			var time = 120000;
 			app.set("brew_status", "brewing");
 			sigPin.set();
 
