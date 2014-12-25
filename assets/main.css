@@ -31,6 +31,9 @@ header h1 {
     text-align: center;
     display: block;
     width: 100%;
+    height: 40px;
+    line-height: 40px;
+    color: #fff;
 }
 
 .current-status[data-status="idle"] {
