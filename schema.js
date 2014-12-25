@@ -1,5 +1,6 @@
 var S = require("sequelize");
-var orm = new S("node_brewr", "root", "root", {
+var db = require('./config');
+var orm = new S(db.name, db.user, db.pass, {
 	dialect: "mysql"
 });
 
