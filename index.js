@@ -11,7 +11,8 @@ var express = require('express'),
 	Brew = schema.Brew,
 	sstatic = require('serve-static'),
 	heatingTimeout,
-	idleTimeout;
+	idleTimeout,
+	sigPin;
 
 app.set("port", process.env.PORT || 3000);
 app.set("brew_status", "idle");
@@ -97,7 +98,7 @@ app.post("/brew", app.ensureAuthed, function (req, res) {
 		});
 	}
 
-	var sigPin = gpio.export(4, {
+	sigPin = gpio.export(4, {
 		interval: 400,
 		ready: function () {
 			var brewtime = 600000;
@@ -129,20 +130,17 @@ app.get("/logout", app.ensureAuthed, function (req, res) {
 });
 
 app.post("/force-off", app.ensureAuthed, function (req, res) {
-	var pin = gpio.export(4, {
-		interval: 500,
-		ready: function () {
-			pin.reset();
-			pin.unexport();
-			app.set("brew_status", "idle");
-			clearTimeout(heatingTimeout);
-			clearTimeout(idleTimeout);
+	if (!!sigPin) {
+		sigPin.reset();
+		sigPin.unexport();
+		app.set("brew_status", "idle");
+		clearTimeout(heatingTimeout);
+		clearTimeout(idleTimeout);
 
-			res.json({
-				msg: "Brewr reset"
-			});
-		}
-	});
+		res.json({
+			msg: "Force resetted. yes."
+		});
+	}
 });
 
 app.listen(app.get("port"), function () {
