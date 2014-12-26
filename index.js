@@ -9,7 +9,9 @@ var express = require('express'),
 	schema = require('./schema'),
 	User = schema.User,
 	Brew = schema.Brew,
-	sstatic = require('serve-static');
+	sstatic = require('serve-static'),
+	heatingTimeout,
+	idleTimeout;
 
 app.set("port", process.env.PORT || 3000);
 app.set("brew_status", "idle");
@@ -104,11 +106,11 @@ app.post("/brew", app.ensureAuthed, function (req, res) {
 			app.set("brew_status", "brewing");
 			sigPin.set();
 
-			setTimeout(function () {
+			heatingTimeout = setTimeout(function () {
 				app.set("brew_status", "heating");
 			}, brewtime);
 
-			setTimeout(function () {
+			idleTimeout = setTimeout(function () {
 				sigPin.reset();
 				sigPin.unexport();
 				app.set("brew_status", "idle");
@@ -124,6 +126,23 @@ app.post("/brew", app.ensureAuthed, function (req, res) {
 app.get("/logout", app.ensureAuthed, function (req, res) {
 	req.logout();
 	res.redirect("/");
+});
+
+app.post("/force-off", app.ensureAuthed, function (req, res) {
+	var pin = gpio.export(4, {
+		interval: 500,
+		ready: function () {
+			pin.reset();
+			pin.unexport();
+			app.set("brew_status", "idle");
+			clearTimeout(heatingTimeout);
+			clearTimeout(idleTimeout);
+
+			res.json({
+				msg: "Brewr reset"
+			});
+		}
+	});
 });
 
 app.listen(app.get("port"), function () {
