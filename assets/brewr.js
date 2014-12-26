@@ -22,7 +22,7 @@ jQuery(function ($) {
 
     $('#force-reset').click(function (e) {
         e.preventDefault();
-        var confirm = confirm("Are you sure you want to reset?");
+        var confirm = window.confirm("Are you sure you want to reset?");
 
         if (confirm) {
             $.post("/force-off");
